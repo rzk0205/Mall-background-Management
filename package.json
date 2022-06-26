@@ -38,10 +38,10 @@
   },
   "lint-staged": {
     "src/**/*.{js,vue}": [
-    "eslint --fix",
-    "git add"
+      "eslint --fix",
+      "git add"
     ]
-    },
+  },
   "gitHooks": {
     "pre-commit": "lint-staged"
   },
