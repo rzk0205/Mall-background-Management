@@ -1,5 +1,5 @@
 import axios from 'axios'
-// import store from '@/store'
+import store from '@/store'
 import { ElMessage } from 'element-plus'
 
 const exceptionMessage = {
@@ -14,6 +14,8 @@ const service = axios.create({
 service.interceptors.request.use(
   (config) => {
     // token
+    const token = store.getters.token
+    config.headers.token = token
     return config
   },
   (error) => {

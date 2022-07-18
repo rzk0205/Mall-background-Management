@@ -28,7 +28,10 @@
             />
           </el-form-item>
           <el-form-item>
-            <el-button class="loginBtn" @click="handleLoginSubmit"
+            <el-button
+              class="loginBtn"
+              @click="handleLoginSubmit"
+              :loading="load.loading"
               >登录</el-button
             >
           </el-form-item>
@@ -42,12 +45,17 @@
 import { reactive, ref } from 'vue'
 import { useStore } from 'vuex'
 import { User, Lock } from '@element-plus/icons-vue'
+import { useRouter } from 'vue-router'
 
 const loginForm = reactive({
   username: '',
   password: ''
 })
+const load = reactive({
+  loading: false
+})
 const store = useStore()
+const router = useRouter()
 const loginRef = ref(null)
 const loginRules = reactive({
   username: [
@@ -66,13 +74,19 @@ const loginRules = reactive({
   ]
 })
 const handleLoginSubmit = () => {
-  if (!loginRef.value) return
-  loginRef.value.validate(async (valid) => {
-    if (valid) {
-      const res = await store.dispatch('user/login', loginForm)
-      console.log(res)
-    }
-  })
+  try {
+    load.loading = true
+    if (!loginRef.value) return
+    loginRef.value.validate(async (valid) => {
+      if (valid) {
+        const res = await store.dispatch('user/login', loginForm)
+        if (res) {
+          router.push('/')
+        }
+      }
+    })
+  } catch (error) {}
+  load.loading = false
 }
 </script>
 
