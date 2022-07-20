@@ -5,7 +5,7 @@
         <AppHeader></AppHeader>
       </el-header>
       <el-container>
-        <el-aside width="250px">
+        <el-aside width="auto">
           <AppAside></AppAside>
         </el-aside>
         <el-main>
@@ -27,10 +27,11 @@ import AppHeader from './AppHeader'
   height: 100%;
 }
 .el-aside {
-  height: calc(100vh - 64px);
+  height: calc(100vh - 94px);
 }
 .el-main {
   background-color: #f3f4f6;
+  // overflow: hidden;
 }
 .el-header {
   --el-header-padding: 0;

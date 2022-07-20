@@ -8,9 +8,12 @@
     <div class="header-right">
       <div class="left">
         <div class="icon-btn">
-          <span><SvgIcon icon="s-unfold"></SvgIcon></span>
+          <span @click="handleCollapseMenu"
+            ><SvgIcon v-if="iconStatus" icon="s-unfold"></SvgIcon>
+            <SvgIcon v-else icon="s-fold"></SvgIcon>
+          </span>
         </div>
-        <div class="icon-btn">
+        <div class="icon-btn" @click="refresh">
           <el-tooltip
             class="box-item"
             effect="dark"
@@ -22,20 +25,24 @@
         </div>
       </div>
       <div class="right">
-        <div class="icon-btn click">
+        <div class="icon-btn click" @click="fullScreen">
           <el-tooltip
             class="box-item"
             effect="dark"
             content="全屏"
             placement="bottom"
           >
-            <span><SvgIcon icon="full-screen"></SvgIcon></span>
+            <span
+              ><SvgIcon
+                :icon="fullScreenStatus ? 'aim' : 'full-screen'"
+              ></SvgIcon
+            ></span>
           </el-tooltip>
         </div>
         <div class="avatarImg">
           <el-avatar :size="30" :src="userInfo.avatar" />
         </div>
-        <el-dropdown>
+        <el-dropdown @command="handleCommand">
           <span class="el-dropdown-link">
             {{ userInfo.username }}
             <el-icon class="el-icon--right">
@@ -45,7 +52,7 @@
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item command="home">修改密码</el-dropdown-item>
-              <el-dropdown-item command="profile">退出登录</el-dropdown-item>
+              <el-dropdown-item command="logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -56,13 +63,67 @@
 
 <script setup>
 import SvgIcon from '../../components/SvgIcon.vue'
+import { ElNotification, ElMessageBox } from 'element-plus'
 import { ArrowDown } from '@element-plus/icons-vue'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 const store = useStore()
+const router = useRouter()
+const fullScreenStatus = ref(false)
 const userInfo = computed(() => {
   return store.getters.userInfo
 })
+const refresh = () => {
+  location.reload()
+}
+const fullScreen = () => {
+  if (!fullScreenStatus.value) {
+    fullScreenStatus.value = true
+    document.documentElement.webkitRequestFullscreen()
+  } else {
+    fullScreenStatus.value = false
+    document.webkitExitFullscreen()
+  }
+}
+const handleCollapseMenu = () => {
+  // iconStatus = !iconStatus
+  store.dispatch('menu/setCollapse')
+}
+const iconStatus = computed(() => {
+  return store.getters.isCollapse
+})
+const handleCommand = (command) => {
+  switch (command) {
+    case 'home':
+      handleToHome()
+      break
+    case 'logout':
+      handleLogout()
+      break
+  }
+}
+const handleToHome = () => {
+  alert('修改密码')
+}
+const handleLogout = () => {
+  ElMessageBox.confirm('是否要退出登录？', {
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+    .then(async () => {
+      const res = await store.dispatch('user/logout')
+      if (res.msg === 'ok') {
+        router.push('/login')
+        ElNotification({
+          message: res.data,
+          type: 'success'
+        })
+      }
+    })
+    .catch(() => {})
+}
 </script>
 
 <style scoped lang="scss">
@@ -76,11 +137,11 @@ const userInfo = computed(() => {
   font-weight: normal;
   display: flex;
   .header-left {
-    width: 25vw;
+    width: 250px;
     text-align: center;
   }
   .header-right {
-    width: 75vw;
+    width: calc(100vw - 250px);
     display: flex;
     padding: 0 20px;
     justify-content: space-between;
@@ -94,7 +155,7 @@ const userInfo = computed(() => {
     .avatarImg {
       height: 60px;
       width: 45px;
-      padding-top: 10px;
+      padding-top: 6px;
       box-sizing: border-box;
     }
     .left {

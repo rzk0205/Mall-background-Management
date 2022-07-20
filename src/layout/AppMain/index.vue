@@ -1,21 +1,36 @@
 <template>
-  <div>
-    <div>tags</div>
+  <div class="box">
+    <div class="tag"><TagsViewVue></TagsViewVue></div>
     <div class="crad">
-      AppMain
       <router-view></router-view>
     </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import TagsViewVue from '@/components/TagsView.vue'
+</script>
 
 <style scoped lang="scss">
+.tags {
+  position: relative;
+}
 .crad {
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 94px);
   padding: 20px;
   box-sizing: border-box;
-  background-color: #fff;
+  overflow: hidden;
+  // background-color: #fff;
 }
+// .box {
+//   position: relative;
+//   height: calc(100vh - 64px);
+// }
+// .tag {
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   z-index: 99;
+// }
 </style>

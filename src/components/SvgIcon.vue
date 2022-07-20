@@ -48,7 +48,7 @@ const iconName = computed(() => {
   width: 1.3em;
   height: 1.3em;
   vertical-align: -0.2em;
-  padding: 0 5px;
+  /* margin: 0 5px; */
   font-size: 13px;
   fill: currentColor;
   overflow: hidden;
@@ -58,7 +58,7 @@ const iconName = computed(() => {
 }
 .svg-external-icon {
   background-color: currentColor;
-  mask-size: cover !important;
+  /* mask-size: cover !important; */
   display: inline-block;
 }
 </style>

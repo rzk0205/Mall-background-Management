@@ -1,0 +1,7 @@
+<template>
+  <div>优惠券管理</div>
+</template>
+<script setup>
+import {} from 'vue'
+</script>
+<style scoped lang="scss"></style>

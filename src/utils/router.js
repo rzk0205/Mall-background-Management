@@ -26,9 +26,9 @@ const menuRoutes = (item) => {
       icon: item.icon
     }
   }
-  const path = item.icon
+  const path = item.frontpath
   // console.log(path)
-  route.component = () => import('@/views/' + path)
+  route.component = () => import('@/views' + path)
   return route
 }
 

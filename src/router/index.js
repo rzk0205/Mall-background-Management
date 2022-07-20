@@ -10,13 +10,13 @@ const routes = [
     path: '/',
     name: 'layout',
     component: () => import('../layout'),
-    redirect: '/index',
+    redirect: '/',
 
     children: [
       {
-        path: '/index',
+        path: '/',
         name: 'index',
-        component: () => import('../views/home-filled')
+        component: () => import('../views/index.vue')
       },
       {
         path: '/404',

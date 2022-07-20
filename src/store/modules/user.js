@@ -1,5 +1,5 @@
 import loginApi from '../../api/user'
-import { getItem, setItem } from '@/utils/storage'
+import { getItem, setItem, removeItem } from '@/utils/storage'
 export default {
   namespaced: true,
   state: {
@@ -31,6 +31,16 @@ export default {
       // console.log(menu)
       commit('setUserInfo', userInfo.data)
       return userInfo
+    },
+    // 退出登录
+    async logout({ commit }) {
+      const res = await loginApi.logout()
+      commit('setToken', '')
+      commit('setUserInfo', '')
+      removeItem('token')
+      removeItem('tags')
+      console.log(res)
+      return res
     }
   }
 }

@@ -31,7 +31,7 @@
             <el-button
               class="loginBtn"
               @click="handleLoginSubmit"
-              :loading="load.loading"
+              :loading="loading"
               >登录</el-button
             >
           </el-form-item>
@@ -51,9 +51,7 @@ const loginForm = reactive({
   username: '',
   password: ''
 })
-const load = reactive({
-  loading: false
-})
+const loading = ref(null)
 const store = useStore()
 const router = useRouter()
 const loginRef = ref(null)
@@ -75,7 +73,7 @@ const loginRules = reactive({
 })
 const handleLoginSubmit = () => {
   try {
-    load.loading = true
+    loading.value = true
     if (!loginRef.value) return
     loginRef.value.validate(async (valid) => {
       if (valid) {
@@ -86,7 +84,7 @@ const handleLoginSubmit = () => {
       }
     })
   } catch (error) {}
-  load.loading = false
+  loading.value = false
 }
 </script>
 

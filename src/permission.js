@@ -11,9 +11,7 @@ router.beforeEach(async (to, from, next) => {
       ElMessage('请勿重复登录')
       next(from.path)
     } else {
-      if (store.getters.userInfo) {
-        next()
-      } else {
+      if (!store.getters.userInfo) {
         const res = await store.dispatch('user/getUserInfo')
         console.log(res)
         if (res) {
@@ -26,12 +24,14 @@ router.beforeEach(async (to, from, next) => {
               router.addRoute('layout', item)
               // console.log(item)
             })
-            return next(to.from)
+            return next(to.path)
           }
           next()
         } else {
           next('/login')
         }
+      } else {
+        next()
       }
     }
   } else {

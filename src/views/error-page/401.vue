@@ -1,7 +1,9 @@
 <template>
-  <div>401</div>
+  <div class="">401</div>
 </template>
 
-<script setup></script>
+<script setup>
+import {} from 'vue'
+</script>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped></style>
