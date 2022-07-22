@@ -51,7 +51,7 @@ const loginForm = reactive({
   username: '',
   password: ''
 })
-const loading = ref(null)
+const loading = ref(false)
 const store = useStore()
 const router = useRouter()
 const loginRef = ref(null)
@@ -72,19 +72,17 @@ const loginRules = reactive({
   ]
 })
 const handleLoginSubmit = () => {
-  try {
-    loading.value = true
-    if (!loginRef.value) return
-    loginRef.value.validate(async (valid) => {
-      if (valid) {
-        const res = await store.dispatch('user/login', loginForm)
-        if (res) {
-          router.push('/')
-        }
+  loading.value = true
+  if (!loginRef.value) return
+  loginRef.value.validate(async (valid) => {
+    if (valid) {
+      const res = await store.dispatch('user/login', loginForm)
+      if (res) {
+        loading.value = false
+        router.push('/')
       }
-    })
-  } catch (error) {}
-  loading.value = false
+    }
+  })
 }
 </script>
 
